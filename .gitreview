@@ -1,0 +1,5 @@
+[gerrit]
+host = djifchef.dev.djns.com
+port = 29418
+project = nc_users
+defaultbranch = master

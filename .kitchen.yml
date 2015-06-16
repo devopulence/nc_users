@@ -1,0 +1,32 @@
+---
+driver_plugin: vagrant
+
+provisioner:
+  name: chef_zero
+  client_rb:
+    node_name: "<%= ENV['CHEF_VAULT_SERVER_ID']%>"                  # Add export chef_server_id=[your chef server id] to your ~/.bash_profile or ~/.zsh.after/envars.zsh
+    client_key: "/etc/chef/<%= ENV['CHEF_VAULT_SERVER_ID']%>.pem"   # Add export chef_server_id=[your chef_server id] to your ~/.bash_profile or ~/.zsh.after/envars.zsh
+
+
+platforms:
+- name: centos-6.4-selinux
+  driver_config:
+    box: centos-6.6
+    box_url: http://skpkstscloud01.dowjones.net/chef/vbox/centos/centos66-chef-0.1.0.box
+    http_proxy: 
+    https_proxy:
+    synced_folders:
+       - ["<%= ENV['CHEF_REPO_PATH'] %>/.chef", "/etc/chef", "disabled:false"]
+suites:
+- name: default
+  data_bags_path: "test/integration/default/data_bags"
+
+  run_list:
+  - recipe[nc_users]
+  attributes:
+    chef_client:
+      config:
+        log_level: ":debug"
+
+
+
